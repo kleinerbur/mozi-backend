@@ -2,9 +2,10 @@ package cinemacity
 
 import "sync"
 
-func new(ID int) (*CinemaCity, error) {
+func new(id int) (*CinemaCity, error) {
 	cc := CinemaCity{
-		ID,
+		id,
+		locationName[id],
 		make([]CinemaCityMovie, 0),
 		make([]CinemaCityEvent, 0),
 		sync.Mutex{},
@@ -17,25 +18,25 @@ func new(ID int) (*CinemaCity, error) {
 }
 
 func Allee() (*CinemaCity, error) {
-	return new(ALLEE)
+	return new(allee)
 }
 
 func Arena() (*CinemaCity, error) {
-	return new(ARENA)
+	return new(arena)
 }
 
 func Campona() (*CinemaCity, error) {
-	return new(CAMPONA)
+	return new(campona)
 }
 
 func DunaPlaza() (*CinemaCity, error) {
-	return new(DUNAPLAZA)
+	return new(dunaplaza)
 }
 
 func Mammut() (*CinemaCity, error) {
-	return new(MAMMUT)
+	return new(mammut)
 }
 
 func WestEnd() (*CinemaCity, error) {
-	return new(WESTEND)
+	return new(westend)
 }

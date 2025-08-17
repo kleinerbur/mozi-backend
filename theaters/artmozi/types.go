@@ -116,6 +116,7 @@ func (r *ArtMoziResponse) UnmarshalJSON(data []byte) error {
 
 type ArtMozi struct {
 	cinemaID int
+	name     string
 	baseUrl  string
 	Movies   map[int]ArtMoziMovie
 	Events   []ArtMoziEvent

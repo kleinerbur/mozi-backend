@@ -2,10 +2,11 @@ package artmozi
 
 import "sync"
 
-func new(ID int) (*ArtMozi, error) {
+func new(id int) (*ArtMozi, error) {
 	am := &ArtMozi{
-		ID,
-		baseUrls[ID],
+		id,
+		locationName[id],
+		baseUrl[id],
 		make(map[int]ArtMoziMovie, 0),
 		make([]ArtMoziEvent, 0),
 		sync.Mutex{},
@@ -18,25 +19,25 @@ func new(ID int) (*ArtMozi, error) {
 }
 
 func Corvin() (*ArtMozi, error) {
-	return new(CORVIN)
+	return new(corvin)
 }
 
 func Puskin() (*ArtMozi, error) {
-	return new(PUSKIN)
+	return new(puskin)
 }
 
 func Muvesz() (*ArtMozi, error) {
-	return new(MUVESZ)
+	return new(muvesz)
 }
 
 func Taban() (*ArtMozi, error) {
-	return new(TABAN)
+	return new(taban)
 }
 
 func Kino() (*ArtMozi, error) {
-	return new(KINO)
+	return new(kino)
 }
 
 func Toldi() (*ArtMozi, error) {
-	return new(TOLDI)
+	return new(toldi)
 }

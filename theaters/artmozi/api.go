@@ -24,13 +24,13 @@ func (am *ArtMozi) getData(date time.Time) error {
 		),
 	)
 	if err != nil {
-		return fmt.Errorf("GET events @ ArtMozi %s failed: '%w'", locationNames[am.cinemaID], err)
+		return fmt.Errorf("GET events @ ArtMozi %s failed: '%w'", am.name, err)
 	}
 	defer resp.Body.Close()
 	var jsonResp ArtMoziResponse
 	err = json.NewDecoder(resp.Body).Decode(&jsonResp)
 	if err != nil {
-		return fmt.Errorf("GET events @ ArtMozi %s failed: '%w'", locationNames[am.cinemaID], err)
+		return fmt.Errorf("GET events @ ArtMozi %s failed: '%w'", am.name, err)
 	}
 	am.addMovies(jsonResp.Movies)
 	am.addEvents(jsonResp.Events)

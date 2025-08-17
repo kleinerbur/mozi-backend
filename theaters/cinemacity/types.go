@@ -10,6 +10,7 @@ import (
 
 type CinemaCity struct {
 	cinemaID int
+	name     string
 	Movies   []CinemaCityMovie
 	Events   []CinemaCityEvent
 	mutex    sync.Mutex

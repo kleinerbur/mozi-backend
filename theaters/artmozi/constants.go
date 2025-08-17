@@ -1,28 +1,28 @@
 package artmozi
 
 const (
-	CORVIN = 1447
-	PUSKIN = 1448
-	TOLDI  = 1449
-	MUVESZ = 1450
-	TABAN  = 1451
-	KINO   = 1452
+	corvin = 1447
+	puskin = 1448
+	toldi  = 1449
+	muvesz = 1450
+	taban  = 1451
+	kino   = 1452
 )
 
-var locationNames = map[int]string{
-	CORVIN: "Corvin",
-	PUSKIN: "Puskin",
-	TOLDI:  "Toldi",
-	MUVESZ: "Művész",
-	TABAN:  "Tabán",
-	KINO:   "Kino Café",
+var locationName = map[int]string{
+	corvin: "Corvin",
+	puskin: "Puskin",
+	toldi:  "Toldi",
+	muvesz: "Művész",
+	taban:  "Tabán",
+	kino:   "Kino Café",
 }
 
-var baseUrls = map[int]string{
-	CORVIN: "https://corvinmozi.hu/api/",
-	PUSKIN: "https://puskinmozi.hu/api/",
-	TOLDI:  "https://toldimozi.hu/api/",
-	MUVESZ: "https://muveszmozi.hu/api/",
-	TABAN:  "https://tabanartmozi.hu/api/",
-	KINO:   "https://kinocafemozi.hu/api/",
+var baseUrl = map[int]string{
+	corvin: "https://corvinmozi.hu/api/",
+	puskin: "https://puskinmozi.hu/api/",
+	toldi:  "https://toldimozi.hu/api/",
+	muvesz: "https://muveszmozi.hu/api/",
+	taban:  "https://tabanartmozi.hu/api/",
+	kino:   "https://kinocafemozi.hu/api/",
 }

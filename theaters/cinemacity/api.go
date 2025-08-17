@@ -19,12 +19,12 @@ func (cc *CinemaCity) getMovies(until time.Time) error {
 			until.Format("2006-01-02"),
 		))
 	if err != nil {
-		return fmt.Errorf("GET films @ CinemaCity %s failed: '%w'", locationNames[cc.cinemaID], err)
+		return fmt.Errorf("GET films @ CinemaCity %s failed: '%w'", cc.name, err)
 	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return fmt.Errorf("GET films @ CinemaCity %s failed: '%w'", locationNames[cc.cinemaID], err)
+		return fmt.Errorf("GET films @ CinemaCity %s failed: '%w'", cc.name, err)
 	}
 	var jsonResp struct {
 		Body struct {
@@ -45,12 +45,12 @@ func (cc *CinemaCity) getEvents(date time.Time) error {
 		),
 	)
 	if err != nil {
-		return fmt.Errorf("GET events @ CinemaCity %s failed: '%w'", locationNames[cc.cinemaID], err)
+		return fmt.Errorf("GET events @ CinemaCity %s failed: '%w'", cc.name, err)
 	}
 	defer resp.Body.Close()
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return fmt.Errorf("GET events @ CinemaCity %s failed: '%w'", locationNames[cc.cinemaID], err)
+		return fmt.Errorf("GET events @ CinemaCity %s failed: '%w'", cc.name, err)
 	}
 	var jsonResp struct {
 		Body struct {
@@ -59,7 +59,7 @@ func (cc *CinemaCity) getEvents(date time.Time) error {
 	}
 	err = json.Unmarshal(body, &jsonResp)
 	if err != nil {
-		return fmt.Errorf("GET events @ CinemaCity %s failed: '%w'", locationNames[cc.cinemaID], err)
+		return fmt.Errorf("GET events @ CinemaCity %s failed: '%w'", cc.name, err)
 	}
 	cc.mutex.Lock()
 	cc.Events = append(cc.Events, jsonResp.Body.Events...)
