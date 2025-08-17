@@ -1,11 +1,24 @@
 package pannonia
 
+import (
+	"sync"
+	"time"
+
+	"github.com/gocolly/colly"
+)
+
 type Pannonia struct {
-	id      int
-	baseUrl string
-	name    string
+	name      string
+	baseUrl   string
+	collector *colly.Collector
+	Events    []PannoniaEvent
+	mutex     *sync.Mutex
 }
 
-func (p *Pannonia) init() error {
-	return nil
+type PannoniaEvent struct {
+	Title       string
+	DateTime    time.Time
+	BookingLink string
+	Subbed      bool
+	Premiere    bool
 }

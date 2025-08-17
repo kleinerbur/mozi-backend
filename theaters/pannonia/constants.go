@@ -8,10 +8,10 @@ const (
 )
 
 var baseUrl = map[int]string{
-	mom:    "https://cinemamom.hu",
-	polus:  "https://poluscentermozi.hu",
-	lurdy:  "https://lurdymozi.hu",
-	gobuda: "https://gobudamozi.hu",
+	mom:    "https://cinemamom.hu/",
+	polus:  "https://poluscentermozi.hu/",
+	lurdy:  "https://lurdymozi.hu/",
+	gobuda: "https://gobudamozi.hu/",
 }
 
 var locationName = map[int]string{
@@ -19,4 +19,15 @@ var locationName = map[int]string{
 	polus:  "Pólus",
 	lurdy:  "Lurdy",
 	gobuda: "GOBUDA",
+}
+
+var titlePostfixes = []string{
+	"- Original language",
+	"- Digitálisan felújított",
+}
+
+var excludedKeywords = []string{
+	"bábszínház",
+	"bábmese",
+	"Royal Ballet and Opera",
 }
