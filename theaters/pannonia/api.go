@@ -1,33 +1,58 @@
 package pannonia
 
 import (
+	"regexp"
 	"time"
 
 	"github.com/gocolly/colly"
 )
 
 func (p *Pannonia) init() error {
+	p.collector.OnHTML("div.order-header div.meta", func(eventData *colly.HTMLElement) {
+		r := regexp.MustCompile(`\d. terem`)
+		if r.MatchString(eventData.Text) {
+			bookingLink := eventData.Request.URL.Path[1:]
+			auditorium := r.FindString(eventData.Text)
+			p.Events[bookingLink].Auditorium = auditorium
+		}
+	})
+
+	p.collector.OnHTML("div#details-wrapper", func(movieData *colly.HTMLElement) {
+		movieLink := movieData.Request.URL.Path[1:]
+		p.Movies[movieLink] = &PannoniaMovie{
+			movieLink,
+			parseTitle(movieData),
+			parseOriginalTitle(movieData),
+			parseYear(movieData),
+		}
+	})
+
 	p.collector.OnHTML(".day-wrapper", func(dayWrapper *colly.HTMLElement) {
-		date := parseDate(dayWrapper.DOM.Find(".date").Text())
+		date := parseDate(dayWrapper)
+
 		if date.Before(time.Now().AddDate(0, 0, 15)) {
 			dayWrapper.ForEach(".movie-wrapper", func(idx int, movieWrapper *colly.HTMLElement) {
-				title := trim(movieWrapper.DOM.Find(".title").Text())
-				if isAnActualMovie(title) {
-					premiere := movieWrapper.DOM.Find(".premiere").Text() == "Premier"
-					movieWrapper.ForEach(".movie-time", func(idx int, movieTime *colly.HTMLElement) {
-						bookingLink := movieTime.ChildAttr("a", "href")
-						timestamp, _ := time.Parse("15:04", movieTime.DOM.Find(".time").Text())
-						subbed := movieTime.DOM.Find(".type").Text() == "F"
+				title := parseTitle(movieWrapper)
+				movieLink := parseMovieLink(movieWrapper)
 
-						p.mutex.Lock()
-						p.Events = append(p.Events, PannoniaEvent{
+				if isAnActualMovie(title) {
+					isPremiere := parseIsPremiere(movieWrapper)
+
+					movieWrapper.ForEach(".movie-time", func(idx int, movieTime *colly.HTMLElement) {
+						bookingLink := parseBookingLink(movieTime)
+
+						p.Events[bookingLink] = &PannoniaEvent{
+							parseDateTime(date, movieTime),
+							movieLink,
+							bookingLink,
 							title,
-							combine(date, timestamp),
-							p.baseUrl + bookingLink,
-							subbed,
-							premiere,
-						})
-						p.mutex.Unlock()
+							"",
+							parseIsSubbed(movieTime),
+							isPremiere,
+						}
+
+						p.collector.Visit(p.baseUrl + bookingLink)
+						p.collector.Visit(p.baseUrl + movieLink)
 					})
 				}
 			})

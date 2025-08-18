@@ -1,8 +1,6 @@
 package pannonia
 
 import (
-	"sync"
-
 	"github.com/gocolly/colly"
 )
 
@@ -11,8 +9,8 @@ func new(id int) (*Pannonia, error) {
 		locationName[id],
 		baseUrl[id],
 		colly.NewCollector(),
-		make([]PannoniaEvent, 0),
-		&sync.Mutex{},
+		make(map[string]*PannoniaMovie, 0),
+		make(map[string]*PannoniaEvent, 0),
 	}
 	err := p.init()
 	return p, err

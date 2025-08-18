@@ -1,7 +1,6 @@
 package pannonia
 
 import (
-	"sync"
 	"time"
 
 	"github.com/gocolly/colly"
@@ -11,14 +10,23 @@ type Pannonia struct {
 	name      string
 	baseUrl   string
 	collector *colly.Collector
-	Events    []PannoniaEvent
-	mutex     *sync.Mutex
+	Movies    map[string]*PannoniaMovie
+	Events    map[string]*PannoniaEvent
+}
+
+type PannoniaMovie struct {
+	MovieLink     string
+	Title         string
+	OriginalTitle string
+	Year          int
 }
 
 type PannoniaEvent struct {
-	Title       string
 	DateTime    time.Time
+	MovieLink   string
 	BookingLink string
+	Title       string
+	Auditorium  string
 	Subbed      bool
 	Premiere    bool
 }

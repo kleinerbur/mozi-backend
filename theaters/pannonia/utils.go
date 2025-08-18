@@ -2,11 +2,15 @@ package pannonia
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gocolly/colly"
 )
 
-func parseDate(dateStr string) time.Time {
+func parseDate(dayWrapper *colly.HTMLElement) time.Time {
+	dateStr := dayWrapper.DOM.Find(".date").Text()
 	now := time.Now()
 	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
 	if dateStr == "Ma" {
@@ -53,8 +57,8 @@ func combine(date time.Time, timestamp time.Time) time.Time {
 
 func trim(title string) string {
 	trimmed := title
-	for _, delimiter := range titlePostfixes {
-		trimmed = strings.Split(trimmed, delimiter)[0]
+	for _, substring := range titlePostfixes {
+		trimmed = strings.ReplaceAll(trimmed, substring, "")
 	}
 	return trimmed
 }
@@ -66,4 +70,44 @@ func isAnActualMovie(title string) bool {
 		}
 	}
 	return true
+}
+
+func parseTitle(movieData *colly.HTMLElement) string {
+	return trim(movieData.DOM.Find("div.title").Text())
+}
+
+func parseMovieLink(movieWrapper *colly.HTMLElement) string {
+	return movieWrapper.ChildAttr("td.info a", "href")
+}
+
+func parseOriginalTitle(movieData *colly.HTMLElement) string {
+	originalTitle := movieData.DOM.Find("p.title-original").Text()
+	originalTitle = originalTitle[:len(originalTitle)-4]
+	if originalTitle == "" {
+		originalTitle = parseTitle(movieData)
+	}
+	return originalTitle
+}
+
+func parseYear(movieData *colly.HTMLElement) int {
+	originalTitle := movieData.DOM.Find("p.title-original").Text()
+	year, _ := strconv.Atoi(originalTitle[len(originalTitle)-4:])
+	return year
+}
+
+func parseIsPremiere(movieWrapper *colly.HTMLElement) bool {
+	return movieWrapper.DOM.Find(".premiere").Text() == "Premier"
+}
+
+func parseBookingLink(movieTime *colly.HTMLElement) string {
+	return movieTime.ChildAttr("a", "href")
+}
+
+func parseIsSubbed(movieTime *colly.HTMLElement) bool {
+	return movieTime.DOM.Find(".type").Text() == "F"
+}
+
+func parseDateTime(date time.Time, movieTime *colly.HTMLElement) time.Time {
+	timestamp, _ := time.Parse("15:04", movieTime.DOM.Find(".time").Text())
+	return combine(date, timestamp)
 }

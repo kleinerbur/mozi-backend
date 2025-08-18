@@ -22,8 +22,10 @@ var locationName = map[int]string{
 }
 
 var titlePostfixes = []string{
-	"- Original language",
-	"- Digitálisan felújított",
+	" - Original language with Hungarian subtitles",
+	" - A film",
+	" - Digitálisan felújított",
+	" 4K",
 }
 
 var excludedKeywords = []string{
