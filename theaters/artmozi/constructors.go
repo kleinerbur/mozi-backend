@@ -4,12 +4,13 @@ import "sync"
 
 func new(id int) (*ArtMozi, error) {
 	am := &ArtMozi{
-		id,
-		locationName[id],
-		baseUrl[id],
-		make(map[int]ArtMoziMovie, 0),
-		make([]ArtMoziEvent, 0),
-		sync.Mutex{},
+		cinemaID: id,
+		name:     locationName[id],
+		baseUrl:  baseUrl[id],
+		mutex:    sync.Mutex{},
+
+		Movies: make(map[int]ArtMoziMovie, 0),
+		Events: make([]ArtMoziEvent, 0),
 	}
 	err := am.init()
 	if err != nil {

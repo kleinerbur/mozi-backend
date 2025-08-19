@@ -49,7 +49,7 @@ type ArtMoziEvent struct {
 }
 
 type ArtMoziResponse struct {
-	Movies map[int]ArtMoziMovie // quasi set
+	Movies map[int]ArtMoziMovie
 	Events []ArtMoziEvent
 }
 

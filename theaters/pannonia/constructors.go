@@ -6,11 +6,12 @@ import (
 
 func new(id int) (*Pannonia, error) {
 	p := &Pannonia{
-		locationName[id],
-		baseUrl[id],
-		colly.NewCollector(),
-		make(map[string]*PannoniaMovie, 0),
-		make(map[string]*PannoniaEvent, 0),
+		name:      locationName[id],
+		baseUrl:   baseUrl[id],
+		collector: colly.NewCollector(),
+
+		Movies: make(map[string]*PannoniaMovie, 0),
+		Events: make(map[string]*PannoniaEvent, 0),
 	}
 	err := p.init()
 	return p, err

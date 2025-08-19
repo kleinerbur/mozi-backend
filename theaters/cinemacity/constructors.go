@@ -4,11 +4,12 @@ import "sync"
 
 func new(id int) (*CinemaCity, error) {
 	cc := CinemaCity{
-		id,
-		locationName[id],
-		make([]CinemaCityMovie, 0),
-		make([]CinemaCityEvent, 0),
-		sync.Mutex{},
+		cinemaID: id,
+		name:     locationName[id],
+		mutex:    sync.Mutex{},
+
+		Movies: make([]CinemaCityMovie, 0),
+		Events: make([]CinemaCityEvent, 0),
 	}
 	err := cc.init()
 	if err != nil {
