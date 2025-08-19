@@ -47,14 +47,6 @@ func parseDate(dayWrapper *colly.HTMLElement) time.Time {
 	return date
 }
 
-func combine(date time.Time, timestamp time.Time) time.Time {
-	return time.Date(
-		date.Year(), date.Month(), date.Day(),
-		timestamp.Hour(), timestamp.Minute(), timestamp.Second(), timestamp.Nanosecond(),
-		date.Location(),
-	)
-}
-
 func trim(title string) string {
 	trimmed := title
 	for _, substring := range titlePostfixes {
@@ -95,10 +87,6 @@ func parseYear(movieData *colly.HTMLElement) int {
 	return year
 }
 
-func parseIsPremiere(movieWrapper *colly.HTMLElement) bool {
-	return movieWrapper.DOM.Find(".premiere").Text() == "Premier"
-}
-
 func parseBookingLink(movieTime *colly.HTMLElement) string {
 	return movieTime.ChildAttr("a", "href")
 }
@@ -108,6 +96,13 @@ func parseIsSubbed(movieTime *colly.HTMLElement) bool {
 }
 
 func parseDateTime(date time.Time, movieTime *colly.HTMLElement) time.Time {
-	timestamp, _ := time.Parse("15:04", movieTime.DOM.Find(".time").Text())
-	return combine(date, timestamp)
+	dateTime, _ := time.Parse(
+		"2006-01-02 -07:00 15:04",
+		fmt.Sprintf(
+			"%s %s",
+			date.Format("2006-01-02 -07:00"),
+			movieTime.DOM.Find(".time").Text(),
+		),
+	)
+	return dateTime
 }

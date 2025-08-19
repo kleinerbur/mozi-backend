@@ -82,8 +82,14 @@ func (u *Urania) getEvents(date time.Time) error {
 			}
 		case "span":
 			text := strings.Split(node.Text(), "\n")[0]
-			timestamp, _ := time.Parse("15:04", strings.Split(text, "\u00a0")[0])
-			dateTime = combine(date, timestamp)
+			dateTime, _ = time.Parse(
+				"2006-01-02 -07:00 15:04",
+				fmt.Sprintf(
+					"%s %s",
+					date.Format("2006-01-02 07:00"),
+					strings.Split(text, "\u00a0")[0],
+				),
+			)
 			auditorium = strings.Join(strings.Split(text, " ")[1:], " ")
 		case "div":
 			u.mutex.Lock()

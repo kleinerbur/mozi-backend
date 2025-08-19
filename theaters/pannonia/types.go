@@ -10,8 +10,9 @@ type Pannonia struct {
 	name      string
 	baseUrl   string
 	collector *colly.Collector
-	Movies    map[string]*PannoniaMovie
-	Events    map[string]*PannoniaEvent
+
+	Movies map[string]*PannoniaMovie
+	Events map[string]*PannoniaEvent
 }
 
 type PannoniaMovie struct {
@@ -27,6 +28,5 @@ type PannoniaEvent struct {
 	BookingLink string
 	Title       string
 	Auditorium  string
-	Subbed      bool
-	Premiere    bool
+	IsSubbed    bool
 }

@@ -29,28 +29,22 @@ func (p *Pannonia) init() error {
 
 	p.collector.OnHTML(".day-wrapper", func(dayWrapper *colly.HTMLElement) {
 		date := parseDate(dayWrapper)
-
 		if date.Before(time.Now().AddDate(0, 0, 15)) {
 			dayWrapper.ForEach(".movie-wrapper", func(idx int, movieWrapper *colly.HTMLElement) {
 				title := parseTitle(movieWrapper)
 				movieLink := parseMovieLink(movieWrapper)
-
 				if isAnActualMovie(title) {
-					isPremiere := parseIsPremiere(movieWrapper)
-
 					movieWrapper.ForEach(".movie-time", func(idx int, movieTime *colly.HTMLElement) {
 						bookingLink := parseBookingLink(movieTime)
 
 						p.Events[bookingLink] = &PannoniaEvent{
-							parseDateTime(date, movieTime),
-							movieLink,
-							bookingLink,
-							title,
-							"",
-							parseIsSubbed(movieTime),
-							isPremiere,
+							MovieLink:   movieLink,
+							BookingLink: bookingLink,
+							Title:       title,
+							Auditorium:  "",
+							DateTime:    parseDateTime(date, movieTime),
+							IsSubbed:    parseIsSubbed(movieTime),
 						}
-
 						p.collector.Visit(p.baseUrl + bookingLink)
 						p.collector.Visit(p.baseUrl + movieLink)
 					})
