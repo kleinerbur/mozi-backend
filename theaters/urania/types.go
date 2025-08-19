@@ -11,9 +11,6 @@ type Urania struct {
 	mutex   sync.Mutex
 }
 
-type UraniaMovie struct {
-}
-
 type UraniaEvent struct {
 	BookingLink string
 	MovieLink   string
